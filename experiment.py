@@ -1,6 +1,6 @@
 
 """
-Experiment 3: Does optimization generalize to unseen tasks?
+Experiment 4: Generalization under task distribution shift.
 
 Synthetic simulation only. This is not a real LLM-agent evaluation.
 """
@@ -8,30 +8,46 @@ Synthetic simulation only. This is not a real LLM-agent evaluation.
 import argparse
 import csv
 import json
+import math
 import random
 import statistics
 from pathlib import Path
+
+
+SIMILARITIES = [1.0, 0.75, 0.50, 0.25, 0.0]
 
 
 def clamp(value):
     return max(0.0, min(1.0, value))
 
 
-def make_candidates(rng, n, task_noise=0.25):
+def make_candidates(rng, n, similarity, task_effect=0.25):
     candidates = []
 
     for i in range(n):
-        # General ability across tasks
+        # Ability that transfers across all tasks
         general_ability = rng.random()
 
-        # Performance on familiar training tasks
-        training_score = clamp(
-            general_ability + rng.gauss(0, task_noise)
+        # Candidate-specific strength on training tasks
+        training_specialization = rng.gauss(0, task_effect)
+
+        # Independent task-specific variation
+        independent_specialization = rng.gauss(0, task_effect)
+
+        # How much training-task specialization transfers
+        # to unseen tasks
+        heldout_specialization = (
+            similarity * training_specialization
+            + math.sqrt(1 - similarity ** 2)
+            * independent_specialization
         )
 
-        # Performance on completely different unseen tasks
+        training_score = clamp(
+            general_ability + training_specialization
+        )
+
         heldout_score = clamp(
-            general_ability + rng.gauss(0, task_noise)
+            general_ability + heldout_specialization
         )
 
         candidates.append({
@@ -44,8 +60,8 @@ def make_candidates(rng, n, task_noise=0.25):
     return candidates
 
 
-def run_one(seed, candidates_per_round=40, rounds=10,
-            task_noise=0.25):
+def run_one(seed, similarity, candidates_per_round=40,
+            rounds=10, task_effect=0.25):
 
     rng = random.Random(seed)
     rows = []
@@ -55,13 +71,14 @@ def run_one(seed, candidates_per_round=40, rounds=10,
         pool = make_candidates(
             rng,
             candidates_per_round,
-            task_noise
+            similarity,
+            task_effect
         )
 
-        # Random baseline: select randomly
+        # Random selection
         baseline_pick = rng.choice(pool)
 
-        # Optimizer: select ONLY using training score
+        # Optimization uses training score ONLY
         optimizer_pick = max(
             pool,
             key=lambda x: x["training_score"]
@@ -75,6 +92,7 @@ def run_one(seed, candidates_per_round=40, rounds=10,
             rows.append({
                 "seed": seed,
                 "round": round_id,
+                "similarity": similarity,
                 "policy": policy,
                 **pick
             })
@@ -93,17 +111,9 @@ def summarize(rows):
             if r["policy"] == policy
         ]
 
-        training = [
-            r["training_score"] for r in subset
-        ]
-
-        heldout = [
-            r["heldout_score"] for r in subset
-        ]
-
-        general = [
-            r["general_ability"] for r in subset
-        ]
+        training = [r["training_score"] for r in subset]
+        heldout = [r["heldout_score"] for r in subset]
+        general = [r["general_ability"] for r in subset]
 
         output[policy] = {
             "n": len(subset),
@@ -125,48 +135,61 @@ def main():
     parser.add_argument("--seeds", type=int, default=30)
     parser.add_argument("--rounds", type=int, default=10)
     parser.add_argument("--candidates", type=int, default=40)
-    parser.add_argument("--task-noise", type=float, default=0.25)
+    parser.add_argument("--task-effect", type=float, default=0.25)
     parser.add_argument(
         "--out",
-        default="results_generalization"
+        default="results_distribution_shift"
     )
 
     args = parser.parse_args()
 
     all_rows = []
+    all_summaries = {}
 
-    for seed in range(args.seeds):
-        all_rows.extend(
-            run_one(
-                seed,
+    for similarity in SIMILARITIES:
+
+        similarity_rows = []
+
+        for seed in range(args.seeds):
+
+            rows = run_one(
+                seed=seed,
+                similarity=similarity,
                 candidates_per_round=args.candidates,
                 rounds=args.rounds,
-                task_noise=args.task_noise
+                task_effect=args.task_effect
             )
-        )
 
-    summary = summarize(all_rows)
+            similarity_rows.extend(rows)
+
+        all_rows.extend(similarity_rows)
+
+        all_summaries[str(similarity)] = summarize(
+            similarity_rows
+        )
 
     output_dir = Path(args.out)
     output_dir.mkdir(parents=True, exist_ok=True)
 
     with open(output_dir / "trials.csv", "w", newline="") as f:
+
         writer = csv.DictWriter(
             f,
             fieldnames=all_rows[0].keys()
         )
+
         writer.writeheader()
         writer.writerows(all_rows)
 
     report = {
-        "experiment": "generalization to unseen tasks",
+        "experiment": "generalization under task distribution shift",
         "configuration": vars(args),
-        "summary": summary,
+        "task_similarities": SIMILARITIES,
+        "results_by_similarity": all_summaries,
         "interpretation_warning": (
-            "Synthetic simulation only. Training and held-out "
-            "scores share a general ability component. This is "
-            "a simplified model of generalization, not a real "
-            "evaluation of AI agents."
+            "Synthetic simulation only. Task-specific effects "
+            "are correlated according to the similarity parameter. "
+            "This does not establish how real AI agents generalize."
         )
     }
 
