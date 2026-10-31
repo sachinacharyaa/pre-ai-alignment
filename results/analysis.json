@@ -1,0 +1,26 @@
+{
+  "true_score": {
+    "mean_paired_difference_optimizer_minus_baseline": 0.32956868788413085,
+    "bootstrap_95_percentile_interval": [
+      0.29780715192260865,
+      0.3615631414357212
+    ],
+    "n_seeds": 30
+  },
+  "proxy_score": {
+    "mean_paired_difference_optimizer_minus_baseline": 0.4397797700910603,
+    "bootstrap_95_percentile_interval": [
+      0.406287017656949,
+      0.4704514601948331
+    ],
+    "n_seeds": 30
+  },
+  "gaming_flag": {
+    "mean_paired_difference_optimizer_minus_baseline": 0.36666666666666664,
+    "bootstrap_95_percentile_interval": [
+      0.2833333333333333,
+      0.45
+    ],
+    "n_seeds": 30
+  }
+}
