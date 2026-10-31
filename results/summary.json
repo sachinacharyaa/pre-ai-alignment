@@ -3,7 +3,7 @@
   "configuration": {
     "seeds": 30,
     "rounds": 10,
-    "candidates": 40,
+    "candidates": 100,
     "gaming_rate": 0.25,
     "out": "results"
   },
@@ -11,16 +11,16 @@
     "proxy_optimizer": {
       "n": 300,
       "mean_proxy_score": 1.0,
-      "mean_true_score": 0.8205126890541827,
-      "proxy_minus_true": 0.1794873109458172,
-      "fraction_gaming_flagged": 0.6433333333333333
+      "mean_true_score": 0.8213947394325265,
+      "proxy_minus_true": 0.17860526056747353,
+      "fraction_gaming_flagged": 0.62
     },
     "random_baseline": {
       "n": 300,
-      "mean_proxy_score": 0.5602202299089397,
-      "mean_true_score": 0.49094400117005194,
-      "proxy_minus_true": 0.06927622873888782,
-      "fraction_gaming_flagged": 0.27666666666666667
+      "mean_proxy_score": 0.5423657512983445,
+      "mean_true_score": 0.4737440705654306,
+      "proxy_minus_true": 0.06862168073291385,
+      "fraction_gaming_flagged": 0.22
     }
   },
   "interpretation_warning": "Synthetic simulation only. It does not evaluate an LLM or establish claims about real AI alignment. Results depend on the toy data-generating process."
