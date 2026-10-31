@@ -1,0 +1,32 @@
+{
+  "experiment": "proxy optimization with independent evaluation",
+  "configuration": {
+    "seeds": 30,
+    "rounds": 10,
+    "candidates": 40,
+    "gaming_rate": 0.25,
+    "eval_noise": 0.1,
+    "out": "results_independent"
+  },
+  "summary": {
+    "proxy_optimizer": {
+      "n": 300,
+      "mean_proxy_score": 0.9998741083197287,
+      "mean_true_score": 0.8269218456885195,
+      "mean_independent_eval_score": 0.8147097871787223,
+      "proxy_minus_true": 0.17295226263120925,
+      "proxy_minus_independent": 0.18516432114100628,
+      "fraction_gaming_flagged": 0.59
+    },
+    "random_baseline": {
+      "n": 300,
+      "mean_proxy_score": 0.6025928787412638,
+      "mean_true_score": 0.5251525083606942,
+      "mean_independent_eval_score": 0.5250988214449871,
+      "proxy_minus_true": 0.07744037038056963,
+      "proxy_minus_independent": 0.07749405729627658,
+      "fraction_gaming_flagged": 0.25333333333333335
+    }
+  },
+  "interpretation_warning": "Synthetic simulation only. Independent evaluation is a separate noisy measurement of the same underlying quality, not a genuine unseen-task generalization test."
+}
