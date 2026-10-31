@@ -1,0 +1,27 @@
+{
+  "experiment": "generalization to unseen tasks",
+  "configuration": {
+    "seeds": 30,
+    "rounds": 10,
+    "candidates": 40,
+    "task_noise": 0.25,
+    "out": "results_generalization"
+  },
+  "summary": {
+    "random_baseline": {
+      "n": 300,
+      "mean_training_score": 0.5059385455258626,
+      "mean_heldout_score": 0.5156993961278084,
+      "mean_general_ability": 0.5065960113392753,
+      "training_minus_heldout": -0.009760850601945755
+    },
+    "training_optimizer": {
+      "n": 300,
+      "mean_training_score": 0.9993618497863523,
+      "mean_heldout_score": 0.7907476231476273,
+      "mean_general_ability": 0.8442575690617832,
+      "training_minus_heldout": 0.2086142266387251
+    }
+  },
+  "interpretation_warning": "Synthetic simulation only. Training and held-out scores share a general ability component. This is a simplified model of generalization, not a real evaluation of AI agents."
+}
