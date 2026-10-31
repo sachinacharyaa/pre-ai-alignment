@@ -1,0 +1,100 @@
+{
+  "experiment": "generalization under task distribution shift",
+  "configuration": {
+    "seeds": 30,
+    "rounds": 10,
+    "candidates": 40,
+    "task_effect": 0.25,
+    "out": "results_distribution_shift"
+  },
+  "task_similarities": [
+    1.0,
+    0.75,
+    0.5,
+    0.25,
+    0.0
+  ],
+  "results_by_similarity": {
+    "1.0": {
+      "random_baseline": {
+        "n": 300,
+        "mean_training_score": 0.5059385455258626,
+        "mean_heldout_score": 0.5059385455258626,
+        "mean_general_ability": 0.5065960113392753,
+        "training_minus_heldout": 0.0
+      },
+      "training_optimizer": {
+        "n": 300,
+        "mean_training_score": 0.9993618497863523,
+        "mean_heldout_score": 0.9993618497863523,
+        "mean_general_ability": 0.8442575690617832,
+        "training_minus_heldout": 0.0
+      }
+    },
+    "0.75": {
+      "random_baseline": {
+        "n": 300,
+        "mean_training_score": 0.5059385455258626,
+        "mean_heldout_score": 0.5135125066000953,
+        "mean_general_ability": 0.5065960113392753,
+        "training_minus_heldout": -0.007573961074232622
+      },
+      "training_optimizer": {
+        "n": 300,
+        "mean_training_score": 0.9993618497863523,
+        "mean_heldout_score": 0.9515988299403312,
+        "mean_general_ability": 0.8442575690617832,
+        "training_minus_heldout": 0.04776301984602115
+      }
+    },
+    "0.5": {
+      "random_baseline": {
+        "n": 300,
+        "mean_training_score": 0.5059385455258626,
+        "mean_heldout_score": 0.516077598513455,
+        "mean_general_ability": 0.5065960113392753,
+        "training_minus_heldout": -0.010139052987592427
+      },
+      "training_optimizer": {
+        "n": 300,
+        "mean_training_score": 0.9993618497863523,
+        "mean_heldout_score": 0.9002473515700182,
+        "mean_general_ability": 0.8442575690617832,
+        "training_minus_heldout": 0.09911449821633411
+      }
+    },
+    "0.25": {
+      "random_baseline": {
+        "n": 300,
+        "mean_training_score": 0.5059385455258626,
+        "mean_heldout_score": 0.516969168303955,
+        "mean_general_ability": 0.5065960113392753,
+        "training_minus_heldout": -0.011030622778092348
+      },
+      "training_optimizer": {
+        "n": 300,
+        "mean_training_score": 0.9993618497863523,
+        "mean_heldout_score": 0.8471558737257492,
+        "mean_general_ability": 0.8442575690617832,
+        "training_minus_heldout": 0.1522059760606031
+      }
+    },
+    "0.0": {
+      "random_baseline": {
+        "n": 300,
+        "mean_training_score": 0.5059385455258626,
+        "mean_heldout_score": 0.5156993961278084,
+        "mean_general_ability": 0.5065960113392753,
+        "training_minus_heldout": -0.009760850601945755
+      },
+      "training_optimizer": {
+        "n": 300,
+        "mean_training_score": 0.9993618497863523,
+        "mean_heldout_score": 0.7907476231476273,
+        "mean_general_ability": 0.8442575690617832,
+        "training_minus_heldout": 0.2086142266387251
+      }
+    }
+  },
+  "interpretation_warning": "Synthetic simulation only. Task-specific effects are correlated according to the similarity parameter. This does not establish how real AI agents generalize."
+}
