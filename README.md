@@ -1,4 +1,4 @@
-# Automated Alignment Research: Pre-work Experiment
+# AAR: Pre-work Experiment
 
 ## Research question
 When a selection process optimizes a proxy score, does its apparent improvement
